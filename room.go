@@ -49,11 +49,11 @@ func (r *RoomService) Get(ctx context.Context, sidOrUniqueName string) (*Room, e
 
 // Complete an in-progress Room with the given sid. All connected
 // Participants will be immediately disconnected from the Room.
-func (r *RoomService) Complete(sid string) (*Room, error) {
+func (r *RoomService) Complete(ctx context.Context, sid string) (*Room, error) {
 	room := new(Room)
 	v := url.Values{}
 	v.Set("Status", string(StatusCompleted))
-	err := r.client.UpdateResource(context.Background(), roomPathPart, sid, v, room)
+	err := r.client.UpdateResource(ctx, roomPathPart, sid, v, room)
 	return room, err
 }
 
@@ -89,4 +89,11 @@ func (r *RoomPageIterator) Next(ctx context.Context) (*RoomPage, error) {
 	}
 	r.p.SetNextPageURI(rp.Meta.NextPageURL)
 	return rp, nil
+}
+
+// RemoveParticipant kicks a participant from a room
+func (r *RoomService) RemoveParticipant(ctx context.Context, roomName, particpantIdentity string) error {
+	v := url.Values{}
+	v.Set("Status", "disconnected")
+	return r.client.UpdateResource(ctx, roomPathPart+"/"+roomName+"/Participants", particpantIdentity, v, nil)
 }
