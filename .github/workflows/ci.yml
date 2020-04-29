@@ -14,13 +14,13 @@ jobs:
         go-version: ${{ matrix.go-version }}
     - uses: actions/checkout@v2
       with:
-         path: './src/github.com/kevinburke/twilio-go'
+         path: './src/github.com/andybar2/twilio-go'
     # staticcheck needs this for GOPATH
     - run: echo "::set-env name=GOPATH::$GITHUB_WORKSPACE"
     - run: echo "::set-env name=PATH::$GITHUB_WORKSPACE/bin:$PATH"
     - name: Download dependencies
       run: go get -t -v ./...
-      working-directory: './src/github.com/kevinburke/twilio-go'
+      working-directory: './src/github.com/andybar2/twilio-go'
     - name: Run tests
       run: make race-test-short
-      working-directory: './src/github.com/kevinburke/twilio-go'
+      working-directory: './src/github.com/andybar2/twilio-go'
