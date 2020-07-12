@@ -294,6 +294,10 @@ const StatusCompleted = Status("completed")
 const StatusInProgress = Status("in-progress")
 const StatusRinging = Status("ringing")
 
+// Video statuses
+
+const StatusDisconnected = Status("disconnected")
+
 // Fax statuses
 
 const StatusProcessing = Status("processing")
