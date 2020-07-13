@@ -491,7 +491,6 @@ func (c *Client) MakeRequest(ctx context.Context, method string, pathPart string
 	if method == "GET" && data != nil {
 		pathPart = pathPart + "?" + data.Encode()
 	}
-	fmt.Println(pathPart)
 	req, err := c.NewRequest(method, pathPart, rb)
 	if err != nil {
 		return err
