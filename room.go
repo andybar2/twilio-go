@@ -114,13 +114,13 @@ func (r *RoomPageIterator) Next(ctx context.Context) (*RoomPage, error) {
 
 // ListParticipants takes a room and returns the participants in the room
 func (r *RoomService) ListParticipants(ctx context.Context, roomName string, data url.Values) ([]*RoomParticipant, error) {
-	var page *RoomParticipantPage
+	page := new(RoomParticipantPage)
 	path := fmt.Sprintf(participantsPath, roomName)
 	err := r.client.ListResource(ctx, path, data, page)
 	if err != nil {
 		return nil, err
 	}
-	return &page.Participants, nil
+	return page.Participants, nil
 }
 
 // RemoveParticipant kicks a participant from a room
