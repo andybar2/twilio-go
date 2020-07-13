@@ -116,7 +116,9 @@ func (r *RoomPageIterator) Next(ctx context.Context) (*RoomPage, error) {
 func (r *RoomService) ListParticipants(ctx context.Context, roomName string, data url.Values) ([]*RoomParticipant, error) {
 	var page RoomParticipantPage
 	path := fmt.Sprintf(participantsPath, roomName)
+	fmt.Println(path)
 	err := r.client.ListResource(ctx, path, data, page)
+	fmt.Println(page.Participants, page.Meta)
 	if err != nil {
 		return nil, err
 	}
