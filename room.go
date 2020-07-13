@@ -127,6 +127,6 @@ func (r *RoomService) ListParticipants(ctx context.Context, roomName string, dat
 func (r *RoomService) RemoveParticipant(ctx context.Context, roomName, particpantIdentity string) error {
 	v := url.Values{}
 	v.Set("Status", "disconnected")
-	path := fmt.Sprintf(participantsPath, sidOrUniqueName)
+	path := fmt.Sprintf(participantsPath, roomName)
 	return r.client.UpdateResource(ctx, path, particpantIdentity, v, nil)
 }
