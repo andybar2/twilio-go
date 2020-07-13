@@ -288,6 +288,10 @@ const StatusAccepted = Status("accepted")
 const StatusSent = Status("sent")
 const StatusUndelivered = Status("undelivered")
 
+// Video statuses
+
+const StatusDisconnected = Status("disconnected")
+
 // Call statuses
 
 const StatusCompleted = Status("completed")
