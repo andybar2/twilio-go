@@ -2,10 +2,12 @@ package twilio
 
 import (
 	"context"
+	"fmt"
 	"net/url"
 )
 
 const roomPathPart = "Rooms"
+const participantsPath = roomPathPart + "/%s/Participants"
 
 type RoomService struct {
 	client *Client
@@ -29,6 +31,25 @@ type Room struct {
 	EndTime                     TwilioTime        `json:"end_time"`
 	URL                         string            `json:"url"`
 	Links                       map[string]string `json:"links"`
+}
+
+type RoomParticipantPage struct {
+	Meta         Meta               `json:"meta"`
+	Participants []*RoomParticipant `json:"participants"`
+}
+
+// RoomParticipant is a struct specific to the Video Service
+type RoomParticipant struct {
+	Sid         string            `json:"sid"`
+	Duration    uint              `json:"duration"`
+	Status      Status            `json:"status"`
+	DateCreated TwilioTime        `json:"date_created"`
+	EndTime     TwilioTime        `json:"end_time"`
+	RoomSid     string            `json:"room_sid"`
+	URL         string            `json:"url"`
+	Size        uint              `json:"size"`
+	Identity    string            `json:"identity"`
+	Links       map[string]string `json:"links"`
 }
 
 type RoomPage struct {
@@ -91,9 +112,21 @@ func (r *RoomPageIterator) Next(ctx context.Context) (*RoomPage, error) {
 	return rp, nil
 }
 
+// ListParticipants takes a room and returns the participants in the room
+func (vr *VideoParticipantService) ListParticipants(ctx context.Context, roomName string, data url.Values) ([]*RoomParticipant, error) {
+	var page RoomParticipantPage
+	path := fmt.Sprintf(participantsPath, roomName)
+	err := r.client.ListResource(ctx, path, data, page)
+	if err != nil {
+		return nil, err
+	}
+	return page.Participants, nil
+}
+
 // RemoveParticipant kicks a participant from a room
 func (r *RoomService) RemoveParticipant(ctx context.Context, roomName, particpantIdentity string) error {
 	v := url.Values{}
 	v.Set("Status", "disconnected")
-	return r.client.UpdateResource(ctx, roomPathPart+"/"+roomName+"/Participants", particpantIdentity, v, nil)
+	path := fmt.Sprintf(participantsPath, sidOrUniqueName)
+	return r.client.UpdateResource(ctx, path, particpantIdentity, v, nil)
 }
