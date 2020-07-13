@@ -120,7 +120,7 @@ func (r *RoomService) ListParticipants(ctx context.Context, roomName string, dat
 	if err != nil {
 		return nil, err
 	}
-	return page.Participants, nil
+	return &page.Participants, nil
 }
 
 // RemoveParticipant kicks a participant from a room
